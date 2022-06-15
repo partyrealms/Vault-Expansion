@@ -108,11 +108,7 @@ public class VaultPermsHook implements VaultHook {
             case "ranks_capital":
                 return WordUtils.capitalize(String.join(", ", getGroups(p)));
             case "prefix":
-                String prefix = getPlayerPrefix(p).replaceAll("/&[0-9A-FK-ORX]/gi", "");
-                if (prefix.equals("Guest")) {
-                    prefix = "ZZZ";
-                }
-                return prefix;
+                return getPlayerPrefix(p);
             case "groupprefix":
             case "rankprefix":
                 return getGroupPrefix(p);
@@ -156,8 +152,11 @@ public class VaultPermsHook implements VaultHook {
     }
 
     private String getPlayerPrefix(OfflinePlayer p) {
-        final String prefix = chat.getPlayerPrefix(getWorldName(), p);
-        return prefix == null ? "" : prefix;
+        String prefix = chat.getPlayerPrefix(getWorldName(), p).replaceAll("&[0-9A-FK-ORX]", "");
+        if (prefix.equals("Guest")) {
+            prefix = "ZZZ";
+        }
+        return prefix;
     }
 
     private String getPlayerSuffix(OfflinePlayer p) {
