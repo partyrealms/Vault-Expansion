@@ -125,6 +125,12 @@ public class VaultPermsHook implements VaultHook {
                 return getLastColor(getPlayerPrefix(p));
             case "user_suffix_color":
                 return getLastColor(getPlayerSuffix(p));
+            case "modified_prefix":
+                String prefix = chat.getPlayerPrefix(getWorldName(), p).replaceAll("&[0-9A-FK-ORX]", "");
+                if (prefix.equals("Guest")) {
+                    prefix = "ZZZ";
+                }
+                return prefix;
         }
         return null;
     }
@@ -152,11 +158,8 @@ public class VaultPermsHook implements VaultHook {
     }
 
     private String getPlayerPrefix(OfflinePlayer p) {
-        String prefix = chat.getPlayerPrefix(getWorldName(), p).replaceAll("&[0-9A-FK-ORX]", "");
-        if (prefix.equals("Guest")) {
-            prefix = "ZZZ";
-        }
-        return prefix;
+        final String prefix = chat.getPlayerPrefix(getWorldName(), p);
+        return prefix == null ? "" : prefix;
     }
 
     private String getPlayerSuffix(OfflinePlayer p) {
